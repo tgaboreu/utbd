@@ -1,0 +1,55 @@
+# utbd configuration file
+# /etc/utbd/utbd.conf
+#
+# Command-line options override these values.  Run 'utbd --help'.
+
+# SIP PBX or provider to register with, host[:port]
+registrar = pbx.example.com
+
+# SIP account — must match the endpoint configured on the PBX
+username = utbd
+password = changeme
+
+# Who may call in.  Default: only the registrar.
+#   allow = any                        accept calls from anywhere
+#   allow = 192.0.2.10, 198.51.100.0/24
+# Without a registrar, 'allow' is required (direct SIP peering).
+# allow =
+
+# Local SIP port and RTP media port range (UDP).  Each call uses one
+# RTP port: allow at least two per simultaneous call.
+# sip_port  = 5060
+# rtp_ports = 10200-10399
+
+# Local address for SIP and RTP.  Default: the address that routes
+# to the registrar (or the default route).  Set it on hosts with
+# several interfaces if the automatic choice is wrong.
+# local_ip = 192.0.2.5
+
+# Public address to advertise behind NAT (optional)
+# public_ip = 203.0.113.5
+
+# Broadcast format: wwv (1000 Hz ticks, male voice at :52.5)
+#                or wwvh (1200 Hz ticks, female voice at :45)
+station = wwv
+
+# Voice files, see gen-voice.sh
+voice_dir = /usr/local/share/utbd/voice
+
+# UT1 - UTC in tenths of a second (-7..7), sent as doubled ticks and in
+# the time code.  Check the current value in IERS Bulletin A.
+dut1 = 0
+
+# Daylight saving rules for the DST bits of the time code: eu, us, none
+dst = eu
+
+# Send the signal this many milliseconds early to compensate for the
+# telephone path delay (0 = on time at the server, like WWV)
+advance_ms = 0
+
+# Simultaneous listeners and maximum call length in seconds
+max_calls    = 8
+max_call_sec = 180
+
+# Copyright (C) 2026 Gabor Temesi <info@tgabor.eu>
+# SPDX-License-Identifier: GPL-3.0-or-later

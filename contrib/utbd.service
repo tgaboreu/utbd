@@ -1,0 +1,54 @@
+# Copyright (C) 2026 Gabor Temesi <info@tgabor.eu>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[Unit]
+Description=UTC Time Broadcast Daemon (WWV/WWVH format over SIP)
+Documentation=https://time.tgabor.eu
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/utbd --config /etc/utbd/utbd.conf
+Restart=on-failure
+RestartSec=10s
+
+User=utbd
+Group=utbd
+UMask=0027
+SyslogIdentifier=utbd
+
+# Filesystem: read-only system, config and voice files only
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+
+# Privileges
+NoNewPrivileges=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictSUIDSGID=true
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictRealtime=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+RemoveIPC=true
+
+# Network: utbd only talks to its PBX / provider.  It rejects calls
+# from addresses outside 'allow'; to drop all other traffic before it
+# reaches the SIP stack, set the PBX address(es):
+RestrictAddressFamilies=AF_INET AF_INET6
+#IPAddressDeny=any
+#IPAddressAllow=192.168.1.100
+
+[Install]
+WantedBy=multi-user.target
